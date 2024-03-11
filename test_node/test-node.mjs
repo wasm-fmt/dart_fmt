@@ -1,4 +1,4 @@
-import init, { format } from "../dart/dart_fmt_node.js";
+import init, { format } from "../build/dart_fmt_node.js";
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
