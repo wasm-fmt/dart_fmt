@@ -99,10 +99,18 @@ function stringToDartString(string) {
 	}
 }
 
-export function format(source, filename, config = "{}") {
+export function format(source, filename, config = {}) {
+	const options = { lineEnding: "\n" };
+	if (config.line_width) {
+		options.pageWidth = config.line_width;
+	}
+	if (options.line_ending === "crlf") {
+		options.lineEnding = "\r\n";
+	}
+
 	const sourceString = stringToDartString(source);
 	const filenameString = stringToDartString(filename);
-	const configString = stringToDartString(config);
+	const configString = stringToDartString(JSON.stringify(options));
 	const result = wasm.exports.format(
 		sourceString,
 		filenameString,
