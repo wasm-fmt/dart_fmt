@@ -12,5 +12,5 @@ const pkg_json = JSON.parse(pkg_text);
 const jsr_path = path.resolve(pkg_path, "..", "build", "jsr.jsonc");
 pkg_json.name = "@fmt/dart-fmt";
 pkg_json.exports = "./dart_fmt.js";
-pkg_json.exclude = ["!**", "*.tgz"];
+pkg_json.exclude = ["!../build", "*.tgz", ".npmignore"];
 fs.writeFileSync(jsr_path, JSON.stringify(pkg_json, null, 4));
