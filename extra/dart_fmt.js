@@ -12,11 +12,16 @@ export function initSync(module) {
 
 	init_memory(imports);
 
-	if (!(module instanceof WebAssembly.Module)) {
-		module = new WebAssembly.Module(module);
-	}
+	module = normalize(module);
 
 	return (wasm = instantiate(module));
+}
+
+function normalize(module) {
+	if (!(module instanceof WebAssembly.Module)) {
+		return new WebAssembly.Module(module);
+	}
+	return module;
 }
 
 export default async function (input) {
@@ -37,7 +42,9 @@ export default async function (input) {
 
 	init_memory(imports);
 
-	return (wasm = await load(await input).then(instantiate));
+	return (wasm = await load(await input)
+		.then(normalize)
+		.then(instantiate));
 }
 
 async function load(module) {
