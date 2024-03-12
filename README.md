@@ -8,6 +8,12 @@
 npm install @wasm-fmt/dart_fmt
 ```
 
+[![jsr.io](https://jsr.io/badges/@fmt/dart-fmt)](https://jsr.io/@fmt/dart-fmt)
+
+```bash
+npx jsr add @fmt/dart-fmt
+```
+
 # Usage
 
 ```javascript
