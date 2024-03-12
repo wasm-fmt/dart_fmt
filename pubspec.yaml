@@ -1,7 +1,7 @@
 name: dart_fmt
-description: A sample command-line application.
+description: Dart Formatter powered by WASM ported from dart_style
 version: 0.0.0
-# repository: https://github.com/my_org/my_repo
+repository: https://github.com/wasm-fmt/dart_fmt
 
 environment:
   sdk: ^3.3.1
