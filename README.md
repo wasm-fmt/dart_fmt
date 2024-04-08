@@ -2,13 +2,13 @@
 
 # Install
 
-[![npm](https://img.shields.io/npm/v/@wasm-fmt/dart_fmt)](https://www.npmjs.com/package/@wasm-fmt/dart_fmt)
+[![npm](https://img.shields.io/npm/v/@wasm-fmt/dart_fmt?color=00B4AB)](https://www.npmjs.com/package/@wasm-fmt/dart_fmt)
 
 ```bash
 npm install @wasm-fmt/dart_fmt
 ```
 
-[![jsr.io](https://jsr.io/badges/@fmt/dart-fmt)](https://jsr.io/@fmt/dart-fmt)
+[![jsr.io](https://jsr.io/badges/@fmt/dart-fmt?color=00B4AB)](https://jsr.io/@fmt/dart-fmt)
 
 ```bash
 npx jsr add @fmt/dart-fmt
