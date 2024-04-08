@@ -5,17 +5,17 @@ let wasm;
 function get_imports() {}
 function init_memory() {}
 
-export function initSync(module) {
-	if (wasm !== undefined) return wasm;
+// export function initSync(module) {
+// 	if (wasm !== undefined) return wasm;
 
-	const imports = get_imports();
+// 	const imports = get_imports();
 
-	init_memory(imports);
+// 	init_memory(imports);
 
-	module = normalize(module);
+// 	module = normalize(module);
 
-	return (wasm = instantiate(module));
-}
+// 	return (wasm = instantiate(module));
+// }
 
 function normalize(module) {
 	if (!(module instanceof WebAssembly.Module)) {

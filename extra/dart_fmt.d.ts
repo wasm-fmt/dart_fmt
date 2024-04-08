@@ -9,16 +9,16 @@ export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembl
 
 export type InitOutput = unknown;
 
-export type SyncInitInput = BufferSource | WebAssembly.Module;
-/**
-* Instantiates the given `module`, which can either be bytes or
-* a precompiled `WebAssembly.Module`.
-*
-* @param {SyncInitInput} module
-*
-* @returns {InitOutput}
-*/
-export function initSync(module: SyncInitInput): InitOutput;
+// export type SyncInitInput = BufferSource | WebAssembly.Module;
+// /**
+// * Instantiates the given `module`, which can either be bytes or
+// * a precompiled `WebAssembly.Module`.
+// *
+// * @param {SyncInitInput} module
+// *
+// * @returns {InitOutput}
+// */
+// export function initSync(module: SyncInitInput): InitOutput;
 
 /**
 * If `module_or_path` is {RequestInfo} or {URL}, makes a request and
