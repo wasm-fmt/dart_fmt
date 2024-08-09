@@ -1,21 +1,9 @@
-import { instantiate } from "./dart_fmt.mjs";
+import { format as dart_fmt, instantiate, invoke } from "./dart_fmt.mjs";
 
 let wasm;
 
 function get_imports() {}
 function init_memory() {}
-
-// export function initSync(module) {
-// 	if (wasm !== undefined) return wasm;
-
-// 	const imports = get_imports();
-
-// 	init_memory(imports);
-
-// 	module = normalize(module);
-
-// 	return (wasm = instantiate(module));
-// }
 
 function normalize(module) {
 	if (!(module instanceof WebAssembly.Module)) {
@@ -42,9 +30,13 @@ export default async function (input) {
 
 	init_memory(imports);
 
-	return (wasm = await load(await input)
+	wasm = await load(await input)
 		.then(normalize)
-		.then(instantiate));
+		.then(instantiate);
+
+	invoke(wasm);
+
+	return wasm;
 }
 
 async function load(module) {
@@ -70,43 +62,7 @@ async function load(module) {
 	return module;
 }
 
-function stringFromDartString(string) {
-	const totalLength = wasm.exports.$stringLength(string);
-	let result = "";
-	let index = 0;
-	while (index < totalLength) {
-		let chunkLength = Math.min(totalLength - index, 0xffff);
-		const array = new Array(chunkLength);
-		for (let i = 0; i < chunkLength; i++) {
-			array[i] = wasm.exports.$stringRead(string, index++);
-		}
-		result += String.fromCharCode(...array);
-	}
-	return result;
-}
-
-function stringToDartString(string) {
-	const length = string.length;
-	let range = 0;
-	for (let i = 0; i < length; i++) {
-		range |= string.codePointAt(i);
-	}
-	if (range < 256) {
-		const dartString = wasm.exports.$stringAllocate1(length);
-		for (let i = 0; i < length; i++) {
-			wasm.exports.$stringWrite1(dartString, i, string.codePointAt(i));
-		}
-		return dartString;
-	} else {
-		const dartString = wasm.exports.$stringAllocate2(length);
-		for (let i = 0; i < length; i++) {
-			wasm.exports.$stringWrite2(dartString, i, string.charCodeAt(i));
-		}
-		return dartString;
-	}
-}
-
-export function format(source, filename, config = {}) {
+export function format(source, filename = "stdin.dart", config = {}) {
 	const options = { lineEnding: "\n" };
 	if (config.line_width) {
 		options.pageWidth = config.line_width;
@@ -115,13 +71,11 @@ export function format(source, filename, config = {}) {
 		options.lineEnding = "\r\n";
 	}
 
-	const sourceString = stringToDartString(source);
-	const filenameString = stringToDartString(filename);
-	const configString = stringToDartString(JSON.stringify(options));
-	const result = wasm.exports.format(
-		sourceString,
-		filenameString,
-		configString,
-	);
-	return stringFromDartString(result);
+	const result = dart_fmt(source, filename, JSON.stringify(options));
+	const err = result[0] === "x";
+	const output = result.slice(1);
+	if (err) {
+		throw new Error(output);
+	}
+	return output;
 }
