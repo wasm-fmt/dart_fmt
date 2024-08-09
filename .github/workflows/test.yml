@@ -47,7 +47,7 @@ jobs:
         with:
           deno-version: v1.x
 
-      - run: deno test test_deno --allow-read
+      - run: deno test --allow-read
 
   node-test:
     runs-on: ubuntu-latest
@@ -64,4 +64,4 @@ jobs:
         with:
           node-version-file: ".node-version"
 
-      - run: node --test test_node
+      - run: node --test
