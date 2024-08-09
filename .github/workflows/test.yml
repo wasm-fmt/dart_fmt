@@ -35,8 +35,6 @@ jobs:
   deno-test:
     runs-on: ubuntu-latest
     needs: build
-    # panic in deno now
-    if: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
@@ -54,8 +52,6 @@ jobs:
   node-test:
     runs-on: ubuntu-latest
     needs: build
-    # node support WASM GC in node@22
-    if: false
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
