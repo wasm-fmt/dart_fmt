@@ -29,8 +29,26 @@ console.log(formatted);
 
 For Vite users:
 
+Add `"@wasm-fmt/dart_fmt"` to `optimizeDeps.exclude` in your vite config:
+
+```JSON
+{
+    "optimizeDeps": {
+        "exclude": ["@wasm-fmt/dart_fmt"]
+    }
+}
+```
+
+<details>
+<summary>
+If you cannot change the vite config, you can use another import entry
+
+</summary>
+
 ```JavaScript
 import init, { format } from "@wasm-fmt/dart_fmt/vite";
 
 // ...
 ```
+
+</details>
