@@ -119,7 +119,7 @@ jobs:
         run: npm pack
 
       - name: Release
-        uses: softprops/action-gh-release@9b795e578288d5ff64564dfa7dd4cda7b04bb648
+        uses: softprops/action-gh-release@cd8b57e57218a24af14e307ad8491ec133804ef1
         with:
           files: |
             build/*.tgz
