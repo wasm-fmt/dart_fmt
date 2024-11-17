@@ -1,35 +1,29 @@
-import init, { format } from "../build/dart_fmt.js"
+import { assertEquals } from "jsr:@std/assert";
+import { walk } from "jsr:@std/fs/walk";
 
-import { assertEquals } from "https://deno.land/std@0.219.0/assert/mod.ts";
-import { walk } from "https://deno.land/std@0.219.0/fs/walk.ts";
-import { relative } from "https://deno.land/std@0.219.0/path/mod.ts";
+import init, { format } from "../build/dart_fmt.js"
 
 await init();
 
-const update = Deno.args.includes("--update");
+const test_root = new URL(import.meta.resolve("../test_data"));
+Deno.chdir(test_root);
 
-const test_root = new URL("../test_data", import.meta.url);
-
-for await (const entry of walk(test_root, {
-	includeDirs: false,
-	exts: ["unit"],
+for await (const entry of walk(".", {
+    includeDirs: false,
+    exts: ["unit"],
 })) {
-	if (entry.name.startsWith(".")) {
-		continue;
-	}
+    if (entry.name.startsWith(".")) {
+        continue;
+    }
 
-	const input = Deno.readTextFileSync(entry.path);
+    const input_path = entry.path;
+    const expect_path = input_path + ".snap";
 
-	if (update) {
-		const actual = format(input, entry.path);
-		Deno.writeTextFileSync(entry.path + ".snap", actual);
-	} else {
-		const test_name = relative(test_root.pathname, entry.path);
-		const expected = Deno.readTextFileSync(entry.path + ".snap");
+    const input = Deno.readTextFileSync(input_path);
+    const expected = Deno.readTextFileSync(expect_path);
 
-		Deno.test(test_name, () => {
-			const actual = format(input, entry.path);
-			assertEquals(actual, expected);
-		});
-	}
+    Deno.test(input_path, () => {
+        const actual = format(input, entry.path);
+        assertEquals(actual, expected);
+    });
 }
