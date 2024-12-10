@@ -3,6 +3,7 @@ export function format(input: string, filename: string, config?: LayoutConfig): 
 interface LayoutConfig {
 	line_width?: number;
 	line_ending?: "lf" | "crlf";
+	language_version?: string;
 }
 
 export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;

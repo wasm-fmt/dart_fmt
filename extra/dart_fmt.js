@@ -70,6 +70,9 @@ export function format(source, filename = "stdin.dart", config = {}) {
 	if (options.line_ending === "crlf") {
 		options.lineEnding = "\r\n";
 	}
+	if(options.language_version) {
+		options.languageVersion = options.language_version;
+	}
 
 	const result = dart_fmt(source, filename, JSON.stringify(options));
 	const err = result[0] === "x";
