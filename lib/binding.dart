@@ -13,14 +13,35 @@ class Options {
         languageVersion = json['languageVersion'] as String?;
 }
 
-String formatWrapper(String source, String filename, String options) {
+/// Result object returned to JavaScript
+@JS('Object')
+extension type FormatResult._(JSObject _) implements JSObject {
+  external factory FormatResult();
+
+  external set success(bool value);
+  external set code(String? value);
+  external set error(String? value);
+}
+
+FormatResult formatWrapper(String source, String filename, String options) {
   final config = Options.fromJson(jsonDecode(options));
+  final result = FormatResult();
 
   try {
-    return "o${format(source, filename, pageWidth: config.pageWidth, lineEnding: config.lineEnding, version: config.languageVersion)}";
+    result.success = true;
+    result.code = format(
+      source,
+      filename,
+      pageWidth: config.pageWidth,
+      lineEnding: config.lineEnding,
+      version: config.languageVersion,
+    );
   } catch (e) {
-    return "x$e";
+    result.success = false;
+    result.error = e.toString();
   }
+
+  return result;
 }
 
 @JS('format')

@@ -3,9 +3,6 @@ import { format as dart_fmt, instantiate, invoke } from "./dart_fmt.mjs";
 
 let wasm;
 
-function get_imports() {}
-function init_memory() {}
-
 function normalize(module) {
 	if (!(module instanceof WebAssembly.Module)) {
 		return new WebAssembly.Module(module);
@@ -19,7 +16,6 @@ export default async function (input) {
 	if (typeof input === "undefined") {
 		input = new URL("dart_fmt.wasm", import.meta.url);
 	}
-	const imports = get_imports();
 
 	if (
 		typeof input === "string" ||
@@ -28,8 +24,6 @@ export default async function (input) {
 	) {
 		input = fetch(input);
 	}
-
-	init_memory(imports);
 
 	wasm = await load(await input)
 		.then(normalize)
@@ -71,15 +65,13 @@ export function format(source, filename = "stdin.dart", config = {}) {
 	if (config.line_ending === "crlf") {
 		options.lineEnding = "\r\n";
 	}
-	if(config.language_version) {
+	if (config.language_version) {
 		options.languageVersion = config.language_version;
 	}
 
 	const result = dart_fmt(source, filename, JSON.stringify(options));
-	const err = result[0] === "x";
-	const output = result.slice(1);
-	if (err) {
-		throw new Error(output);
+	if (result.success) {
+		return result.code;
 	}
-	return output;
+	throw new Error(result.error);
 }
