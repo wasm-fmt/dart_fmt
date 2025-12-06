@@ -1,3 +1,4 @@
+/* @ts-self-types="./dart_fmt.d.ts" */
 import { format as dart_fmt, instantiate, invoke } from "./dart_fmt.mjs";
 
 let wasm;
@@ -67,11 +68,11 @@ export function format(source, filename = "stdin.dart", config = {}) {
 	if (config.line_width) {
 		options.pageWidth = config.line_width;
 	}
-	if (options.line_ending === "crlf") {
+	if (config.line_ending === "crlf") {
 		options.lineEnding = "\r\n";
 	}
-	if(options.language_version) {
-		options.languageVersion = options.language_version;
+	if(config.language_version) {
+		options.languageVersion = config.language_version;
 	}
 
 	const result = dart_fmt(source, filename, JSON.stringify(options));
