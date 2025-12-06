@@ -9,7 +9,7 @@ jobs:
   wasm-build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: dart-lang/setup-dart@v1
 
       - name: Install dependencies
@@ -37,7 +37,7 @@ jobs:
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4
         with:
           name: build
@@ -62,7 +62,7 @@ jobs:
       id-token: write
     needs: wasm-build
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4
         with:
           name: build
@@ -84,7 +84,7 @@ jobs:
     permissions:
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4
         with:
           name: build
@@ -108,7 +108,7 @@ jobs:
     permissions:
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: actions/download-artifact@v4
         with:
           name: build
