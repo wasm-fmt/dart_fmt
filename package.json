@@ -2,7 +2,7 @@
     "name": "@wasm-fmt/dart_fmt",
     "description": "Dart Formatter powered by WASM ported from dart_style",
     "author": "magic-akari <akari.ccino@gmail.com>",
-    "version": "0.2.0",
+    "version": "0.3.0",
     "license": "MIT",
     "repository": {
         "type": "git",
