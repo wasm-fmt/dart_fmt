@@ -1,32 +1,31 @@
-export function format(input: string, filename: string, config?: LayoutConfig): string;
+/**
+ * WASM formatter for Dart.
+ *
+ * @example
+ * ```ts
+ * import { format } from "@wasm-fmt/dart_fmt";
+ *
+ * const input = "void main() { print('Hello, World!'); }";
+ * const output = format(input, "main.dart");
+ * ```
+ *
+ * @module
+ */
 
 interface LayoutConfig {
+	/** The preferred line width at which the formatter should wrap lines */
 	line_width?: number;
+	/** The type of line ending to apply to the printed input */
 	line_ending?: "lf" | "crlf";
+}
+
+/** Configuration for the Dart formatter */
+export interface Config extends LayoutConfig {
+	/** The Dart language version to use for formatting */
 	language_version?: string;
 }
 
-export type InitInput = RequestInfo | URL | Response | BufferSource | WebAssembly.Module;
-
-export type InitOutput = unknown;
-
-// export type SyncInitInput = BufferSource | WebAssembly.Module;
-// /**
-// * Instantiates the given `module`, which can either be bytes or
-// * a precompiled `WebAssembly.Module`.
-// *
-// * @param {SyncInitInput} module
-// *
-// * @returns {InitOutput}
-// */
-// export function initSync(module: SyncInitInput): InitOutput;
-
 /**
-* If `module_or_path` is {RequestInfo} or {URL}, makes a request and
-* for everything else, calls `WebAssembly.instantiate` directly.
-*
-* @param {InitInput | Promise<InitInput>} module_or_path
-*
-* @returns {Promise<InitOutput>}
-*/
-export default function init(module_or_path?: InitInput | Promise<InitInput>): Promise<InitOutput>;
+ * Format the entire Dart source code string.
+ */
+export function format(input: string, filename: string, config?: Config): string;

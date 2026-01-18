@@ -1,29 +1,26 @@
+#!/usr/bin/env deno test --allow-read --parallel
+
 import { assertEquals } from "jsr:@std/assert";
-import { walk } from "jsr:@std/fs/walk";
+import { expandGlob } from "jsr:@std/fs";
+import { fromFileUrl } from "jsr:@std/path";
 
-import init, { format } from "../build/dart_fmt.js"
+import { format } from "../build/dart_fmt_esm.js";
 
-await init();
+const test_root = fromFileUrl(new URL(import.meta.resolve("../test_data")));
 
-const test_root = new URL(import.meta.resolve("../test_data"));
-Deno.chdir(test_root);
+for await (const entry of expandGlob("**/*.unit", { root: test_root, includeDirs: false })) {
+	if (entry.name.startsWith(".")) {
+		Deno.test.ignore(entry.name, () => {});
+		continue;
+	}
 
-for await (const entry of walk(".", {
-    includeDirs: false,
-    exts: ["unit"],
-})) {
-    if (entry.name.startsWith(".")) {
-        continue;
-    }
+	const input_path = entry.path;
+	const snap_path = input_path + ".snap";
 
-    const input_path = entry.path;
-    const expect_path = input_path + ".snap";
+	const [input, expected] = await Promise.all([Deno.readTextFile(input_path), Deno.readTextFile(snap_path)]);
 
-    const input = Deno.readTextFileSync(input_path);
-    const expected = Deno.readTextFileSync(expect_path);
-
-    Deno.test(input_path, () => {
-        const actual = format(input, entry.path);
-        assertEquals(actual, expected);
-    });
+	Deno.test(input_path, () => {
+		const actual = format(input, input_path);
+		assertEquals(actual, expected);
+	});
 }

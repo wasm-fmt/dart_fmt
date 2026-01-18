@@ -16,39 +16,68 @@ npx jsr add @fmt/dart-fmt
 
 # Usage
 
+## Node.js / Deno / Bun
+
 ```javascript
-import init, { format } from "@wasm-fmt/dart_fmt";
+import { format } from "@wasm-fmt/dart_fmt";
 
-await init();
+const source = `void main() { print('Hello, World!'); }`;
 
-const input = `void main() { print('Hello, World!'); }`;
-
-const formatted = format(input, "main.dart");
+const formatted = format(source);
 console.log(formatted);
 ```
 
-For Vite users:
+## Bundler
 
-Add `"@wasm-fmt/dart_fmt"` to `optimizeDeps.exclude` in your vite config:
+dart_fmt does not support ESM Integration entry yet.
+Try use other entry points like `./esm` or `./web` instead.
 
-```JSON
-{
-    "optimizeDeps": {
-        "exclude": ["@wasm-fmt/dart_fmt"]
-    }
-}
+## Web
+
+For web environments, you need to initialize WASM module manually:
+
+```javascript
+import init, { format } from "@wasm-fmt/dart_fmt/web";
+
+await init();
+
+const source = `void main() { print('Hello, World!'); }`;
+
+const formatted = format(source);
+console.log(formatted);
 ```
 
-<details>
-<summary>
-If you cannot change the vite config, you can use another import entry
-
-</summary>
+### Vite
 
 ```JavaScript
 import init, { format } from "@wasm-fmt/dart_fmt/vite";
 
+await init();
 // ...
 ```
 
-</details>
+## Entry Points
+
+- `.` - Auto-detects environment (Node.js uses node, default is ESM)
+- `./node` - Node.js environment (no init required)
+- `./esm` - ESM environments like Deno (no init required)
+- `./web` - Web browsers (requires manual init)
+- `./vite` - Vite bundler (requires manual init)
+
+# Build from source
+
+```bash
+# 1. install Dart https://dart.dev/get-dart
+
+# 2. clone this repo
+git clone https://github.com/wasm-fmt/dart_fmt.git
+
+# 3. install dependencies
+dart pub get
+
+# 4. build
+npm run build
+
+# 5. test
+npm run test:node
+```

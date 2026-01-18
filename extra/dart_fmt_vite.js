@@ -1,7 +1,9 @@
-import initAsync from "./dart_fmt.js";
-import wasm from "./dart_fmt.wasm?url";
+/* @ts-self-types="./dart_fmt_web.d.ts" */
 
-export default function __wbg_init(input = wasm) {
+import wasm from "./dart_fmt.wasm?url";
+import initAsync from "./dart_fmt_web.js";
+
+export default function (input = wasm) {
 	return initAsync(input);
 }
 
