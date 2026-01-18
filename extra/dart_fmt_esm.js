@@ -1,10 +1,7 @@
 /* @ts-self-types="./dart_fmt.d.ts" */
-import { readFileSync } from "node:fs";
+// prettier-ignore
+import source wasmModule from "./dart_fmt.wasm";
 import { formatWrapper, initSync } from "./dart_fmt.mjs";
-
-const wasmUrl = new URL("dart_fmt.wasm", import.meta.url);
-const wasmBytes = readFileSync(wasmUrl);
-const wasmModule = new WebAssembly.Module(wasmBytes);
 
 const app = initSync(wasmModule);
 

@@ -1,0 +1,19 @@
+{
+	"$schema": "https://jsr.io/schema/config-file.v1.json",
+	"name": "@fmt/dart-fmt",
+	"version": "0.3.0",
+	"exports": {
+		"./node": "./dart_fmt_node.js",
+		"./web": "./dart_fmt_web.js"
+	},
+	"publish": {
+		"include": [
+			"dart_fmt_*",
+			"dart_fmt.*",
+			"*.md"
+		],
+		"exclude": [
+			"!*"
+		]
+	}
+}

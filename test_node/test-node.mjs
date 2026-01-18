@@ -1,31 +1,28 @@
+#! /usr/bin/env node --test
+
 import assert from "node:assert/strict";
 import fs from "node:fs/promises";
-import { basename } from "node:path";
-import { chdir } from "node:process";
+import { join } from "node:path";
 import { test } from "node:test";
 import { fileURLToPath } from "node:url";
 
-import init, { format } from "../build/dart_fmt_node.js";
-
-await init();
+import { format } from "../build/dart_fmt_node.js";
 
 const test_root = fileURLToPath(import.meta.resolve("../test_data"));
-chdir(test_root);
 
-for await (const input_path of fs.glob("**/*.unit")) {
-    if (basename(input_path).startsWith(".")) {
-        continue;
-    }
+for await (const case_name of fs.glob("**/*.unit", { cwd: test_root })) {
+	if (case_name.startsWith(".")) {
+		test.skip(case_name, () => {});
+		continue;
+	}
 
-    const expect_path = input_path + ".snap";
+	const input_path = join(test_root, case_name);
+	const snap_path = input_path + ".snap";
 
-    const [input, expected] = await Promise.all([
-        fs.readFile(input_path, "utf-8"),
-        fs.readFile(expect_path, "utf-8"),
-    ]);
+	const [input, expected] = await Promise.all([fs.readFile(input_path, "utf-8"), fs.readFile(snap_path, "utf-8")]);
 
-    test(input_path, () => {
-        const actual = format(input, input_path);
-        assert.equal(actual, expected);
-    });
+	test(case_name, () => {
+		const actual = format(input, case_name);
+		assert.equal(actual, expected);
+	});
 }
