@@ -36,7 +36,7 @@ jobs:
             id-token: write
         steps:
             - uses: actions/checkout@v6
-            - uses: actions/download-artifact@v7
+            - uses: actions/download-artifact@v8
               with:
                   name: build
                   path: build
@@ -59,7 +59,7 @@ jobs:
         needs: wasm-build
         steps:
             - uses: actions/checkout@v6
-            - uses: actions/download-artifact@v7
+            - uses: actions/download-artifact@v8
               with:
                   name: build
                   path: build
@@ -81,7 +81,7 @@ jobs:
             packages: write
         steps:
             - uses: actions/checkout@v6
-            - uses: actions/download-artifact@v7
+            - uses: actions/download-artifact@v8
               with:
                   name: build
                   path: build
@@ -105,7 +105,7 @@ jobs:
             contents: write
         steps:
             - uses: actions/checkout@v6
-            - uses: actions/download-artifact@v7
+            - uses: actions/download-artifact@v8
               with:
                   name: build
                   path: build
