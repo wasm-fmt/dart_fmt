@@ -1,24 +1,20 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write
-import { walk } from "jsr:@std/fs/walk";
+import { expandGlob } from "jsr:@std/fs";
+import { fromFileUrl } from "jsr:@std/path";
 
-import init, { format } from "../build/dart_fmt.js";
+import { format } from "../build/dart_fmt_esm.js";
 
-await init();
+const test_root = fromFileUrl(new URL(import.meta.resolve("../test_data")));
 
-const test_root = new URL(import.meta.resolve("../test_data"));
-
-for await (const entry of walk(test_root, {
-	includeDirs: false,
-	exts: ["unit"],
-})) {
+for await (const entry of expandGlob("**/*.unit", { root: test_root, includeDirs: false })) {
 	if (entry.name.startsWith(".")) {
 		continue;
 	}
 
 	const expect_path = entry.path + ".snap";
-	const input = Deno.readTextFileSync(entry.path);
+	const input = await Deno.readTextFile(entry.path);
 
 	const actual = format(input, entry.path);
-	Deno.writeTextFileSync(expect_path, actual);
+	await Deno.writeTextFile(expect_path, actual);
 }
 console.log("done");
