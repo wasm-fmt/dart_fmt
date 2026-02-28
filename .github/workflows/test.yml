@@ -36,7 +36,7 @@ jobs:
               working-directory: build
 
             - name: Upload
-              uses: actions/upload-artifact@v6
+              uses: actions/upload-artifact@v7
               with:
                   name: build
                   path: build
@@ -52,7 +52,7 @@ jobs:
                 runtime: [deno, node, bun]
         steps:
             - uses: actions/checkout@v6
-            - uses: actions/download-artifact@v7
+            - uses: actions/download-artifact@v8
               with:
                   name: build
                   path: build
