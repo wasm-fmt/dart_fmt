@@ -3,9 +3,7 @@
 import { Glob } from "bun";
 import { expect, test } from "bun:test";
 
-import init, { format } from "../build/dart_fmt_web.js";
-
-await init();
+import { format } from "../build/dart_fmt_node.js";
 
 const test_root = Bun.fileURLToPath(import.meta.resolve("../test_data"));
 
